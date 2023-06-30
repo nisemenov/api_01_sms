@@ -4,9 +4,10 @@ import requests
 from dotenv import load_dotenv
 from twilio.rest import Client
 
+load_dotenv()
+
 
 def get_status(user_id):
-    load_dotenv()
     token = os.getenv('Token')
     params = {
         'user_ids': user_id,
@@ -15,12 +16,11 @@ def get_status(user_id):
         'fields': 'online',
     }
     url = 'https://api.vk.com/method/users.get'
-    r = requests.get(url, params=params).json()['response'][0]
+    r = requests.get(url, params=params).json().get('response')[0]
     return r.get('online')
 
 
 def sms_sender(sms_text):
-    load_dotenv()
     number_from = os.getenv('NUMBER_FROM')
     number_to = os.getenv('NUMBER_TO')
     account_sid = os.getenv('TWILIO_ACCOUNT_SID')
